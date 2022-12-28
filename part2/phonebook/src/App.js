@@ -9,7 +9,6 @@ const App = () => {
   const [newName, setNewName] = useState("")
   const [newNumber, setNewNumber] = useState("")
   const [filter, setfilter] = useState("")
-  const [showAll, setShowAll] = useState(false)
 
   useEffect(() => {
     console.log("effect")
@@ -64,7 +63,7 @@ const App = () => {
       />
       <h2>Numbers</h2>
       <div>
-        <Persons persons={persons} showAll={showAll} filter={filter} />
+        <Persons persons={persons} filter={filter} />
       </div>
     </div>
   )
