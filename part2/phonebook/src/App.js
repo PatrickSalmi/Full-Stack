@@ -3,12 +3,15 @@ import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import personService from './services/persons'
+import {Notification, Error} from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState("")
   const [newNumber, setNewNumber] = useState("")
   const [filter, setfilter] = useState("")
+  const [notification, setNotification] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
@@ -41,6 +44,10 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setNotification(`Added ${newName}`)
+          setTimeout(() => {
+            setNotification(null)
+          }, 3000)
         })
 
     }
@@ -58,7 +65,10 @@ const App = () => {
           setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
         })
         .catch(error => {
-          alert(`${person.name} was already deleted from the server`)
+          setErrorMessage(`Information of ${person.name} has already been removed from the server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 3000)
           setPersons(persons.filter(p => p.id !== id))
         })
 
@@ -78,7 +88,10 @@ const App = () => {
       personService
         .remove(id)
         .catch(error => {
-          alert(`${person.name} was already deleted from the server`)
+          setErrorMessage(`Information of ${person.name} has already been removed from the server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 3000)
         })
       setPersons(persons.filter(p => p.id !== id))
     }
@@ -87,6 +100,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification}/>
+      <Error message={errorMessage}/>
       <Filter filter={filter} handleFilter={handleFilter} />
       <h2>Add a new</h2>
       <PersonForm
