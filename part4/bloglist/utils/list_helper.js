@@ -20,19 +20,17 @@ const favoriteBlog = (blogs) => {
 const mostBlogs = (blogs) => {
   const authorWithMost = _.chain(blogs)
     .groupBy('author')
-    .map((blogs, author) => ({ author, count: blogs.length }))
-    .maxBy('count')
+    .map((blogs, author) => ({ author, blogs: blogs.length }))
+    .maxBy('blogs')
     .value()
 
   return authorWithMost
 
 }
 
-
-
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
 }

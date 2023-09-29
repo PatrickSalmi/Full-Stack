@@ -53,6 +53,12 @@ describe('most blogs', () => {
   ]
   test('when list has many blogs', () => {
     const result = mostBlogs(blogs)
-    console.log(result)
+    expect(result).toEqual(
+      {
+        author: 'Robert C. Martin',
+        blogs: 3
+
+      }
+    )
   })
 })
