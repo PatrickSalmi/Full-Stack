@@ -15,12 +15,24 @@ const errorHandler = (error, req, res, next) => {
     return res.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
     return res.status(400).json({ error: error.message })
+  } else if (error.name === 'JsonWebTokenError') {
+    return res.status(401).json({ error: error.message })
   }
 
   next(error)
 }
 
+const tokenExtractor = (req, res, next) => {
+  const auth = req.get('authorization')
+  if (auth && auth.startsWith('bearer ')) {
+    return auth.replace('bearer ', '')
+  }
+
+  next()
+}
+
 module.exports = {
   requestLogger,
-  errorHandler
+  errorHandler,
+  tokenExtractor
 }
