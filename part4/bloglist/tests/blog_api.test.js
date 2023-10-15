@@ -6,7 +6,6 @@ const api = supertest(app)
 
 const Blog = require('../models/blog')
 
-
 beforeEach(async () => {
   await Blog.deleteMany({})
 
@@ -46,8 +45,11 @@ describe('addition of a new blog', () => {
       likes: 2
     }
 
+    const token = await helper.authToken()
+
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -70,8 +72,11 @@ describe('addition of a new blog', () => {
       url: 'www.google.com'
     }
 
+    const token = await helper.authToken()
+
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -84,15 +89,45 @@ describe('addition of a new blog', () => {
   })
 
   test('error for missing title or url', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+
     const newBlog = {
       author: 'Pekka',
       url: 'www.google.com'
     }
 
+    const token = await helper.authToken()
+
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(newBlog)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtStart).toHaveLength(blogsAtEnd.length)
+
+  })
+
+  test('fails with status code 401 if token not provided', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+
+    const newBlog = {
+      title: 'test',
+      author: 'Arto',
+      url: 'www.google.com',
+      likes: 2
+    }
+
     await api
       .post('/api/blogs')
       .send(newBlog)
-      .expect(400)
+      .expect(401)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    expect(blogsAtStart).toHaveLength(blogsAtEnd.length)
 
   })
 })
@@ -103,8 +138,11 @@ describe('deletion of a blog', () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
 
+    const token = await helper.authToken()
+
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `Bearer ${token}`)
       .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
@@ -117,8 +155,11 @@ describe('deletion of a blog', () => {
   })
 
   test('failes with status code 400 if id is invalid', async () => {
+    const token = await helper.authToken()
+
     await api
       .delete('/api/blogs/11111111111111')
+      .set('Authorization', `Bearer ${token}`)
       .expect(400)
 
     const blogsAtEnd = await helper.blogsInDb()
