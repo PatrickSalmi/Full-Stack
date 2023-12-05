@@ -1,31 +1,47 @@
-import Notification from "./Notification"
+import { useState } from "react"
 
-const LoginForm = (props) => (
-  <>
-    <h2>Log in to application</h2>
-    <Notification message={props.notification} isError={props.isError}/>
-    <form onSubmit={props.handleLogin}>
-      <div>
-        username
-        <input
-        type="text"
-        value={props.username}
-        name="Username"
-        onChange={({ target }) => props.setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-        type="password"
-        value={props.password}
-        name="Password"
-        onChange={({ target }) => props.setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  </>
-)
+const LoginForm = ({ login }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleLogin = (event) => {
+    event.preventDefault()
+    login({
+      username: username,
+      password: password
+    })
+
+    setUsername('')
+    setPassword('')
+
+  }
+
+  return (
+    <>
+      <h2>Log in to application</h2>
+      <form onSubmit={handleLogin}>
+        <div>
+          username
+          <input
+          type="text"
+          value={username}
+          name="Username"
+          onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
+          password
+          <input
+          type="password"
+          value={password}
+          name="Password"
+          onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type="submit">login</button>
+      </form>
+    </>
+  )
+  }
 
 export default LoginForm
