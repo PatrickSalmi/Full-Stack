@@ -13,12 +13,12 @@ test('<BlogForm /> calls onSubmit', async () => {
   const titleInput = container.querySelector('#title-input')
   const authorInput = container.querySelector('#author-input')
   const urlInput = container.querySelector('#url-input')
-  const sendButton = container.querySelector('#send-button')
+  const submitButton = container.querySelector('#submit-button')
 
   await user.type(titleInput, 'Test Title')
   await user.type(authorInput, 'Test Author')
   await user.type(urlInput, 'Test.url')
-  await user.click(sendButton)
+  await user.click(submitButton)
 
   expect(createBlog.mock.calls).toHaveLength(1)
   expect(createBlog.mock.calls[0][0].title).toBe('Test Title')
