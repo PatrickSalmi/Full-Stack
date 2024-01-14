@@ -1,0 +1,70 @@
+{
+  "notes": [
+    {
+      "id": 1,
+      "content": "custom-hooks are awesome!"
+    },
+    {
+      "id": 2,
+      "content": "best feature ever <3"
+    },
+    {
+      "content": "dsfdsfs",
+      "id": 3
+    },
+    {
+      "content": "adsad",
+      "id": 4
+    },
+    {
+      "content": "dvdfd",
+      "id": 5
+    },
+    {
+      "content": "asdasdsadsa",
+      "id": 6
+    },
+    {
+      "content": "a",
+      "id": 7
+    },
+    {
+      "content": "qwewqeq",
+      "id": 8
+    },
+    {
+      "content": "test tone",
+      "id": 9
+    },
+    {
+      "content": "adada",
+      "id": 10
+    },
+    {
+      "content": "cdsfsfds",
+      "id": 11
+    }
+  ],
+  "persons": [
+    {
+      "id": 1,
+      "name": "mluukkai",
+      "number": "040-5483923"
+    },
+    {
+      "id": 2,
+      "name": "hellas",
+      "number": "012-123123"
+    },
+    {
+      "name": "adasd",
+      "number": "0353453",
+      "id": 3
+    },
+    {
+      "name": "pekka",
+      "number": "040313",
+      "id": 4
+    }
+  ]
+}
