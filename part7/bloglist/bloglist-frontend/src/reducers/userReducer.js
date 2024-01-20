@@ -1,20 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { setNotification } from './notificationReducer'
+import userService from '../services/users'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
 const userSlice = createSlice({
-  name: 'user',
-  initialState: null,
+  name: 'users',
+  initialState: { currentUser: null, users: [] },
   reducers: {
-    setUser(state, action) {
-      return action.payload
+    setUsers(state, action) {
+      state.users = action.payload
     },
-    removeLogin(state, aciton) {
-      return null
+    setCurrentUser(state, action) {
+      state.currentUser = action.payload
+    },
+    removeLogin(state, action) {
+      state.currentUser = null
     }
   }
 })
+
+export const initilizeUsers = () => {
+  return async dispatch => {
+    const users = await userService.getAll()
+    dispatch(setUsers(users))
+  }
+}
 
 export const logIn = userObject => {
   return async dispatch => {
@@ -22,9 +33,11 @@ export const logIn = userObject => {
       const user = await loginService.login(userObject)
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
-      dispatch(setUser(user))
+      dispatch(setCurrentUser(user))
+      return true
     } catch (error) {
       dispatch(setNotification('Wrong username or password', 5, true))
+      return false
     }
   }
 }
@@ -35,7 +48,7 @@ export const checkUser = () => {
     if(loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       blogService.setToken(user.token)
-      dispatch(setUser(user))
+      dispatch(setCurrentUser(user))
     }
   }
 }
@@ -48,5 +61,5 @@ export const logOut = () => {
   }
 }
 
-export const { setUser, removeLogin } = userSlice.actions
+export const { setUsers, setCurrentUser, removeLogin } = userSlice.actions
 export default userSlice.reducer

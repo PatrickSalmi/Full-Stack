@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { setNotification } from './notificationReducer'
+import { initilizeUsers } from './userReducer'
 import blogService from '../services/blogs'
 
 const blogSlice = createSlice({
@@ -35,11 +36,12 @@ export const initilizeBlogs = () => {
   }
 }
 
-export const createBlog = blogObject => {
+export const createBlog = blog => {
   return async dispatch => {
     try {
-      const newBlog = await blogService.create(blogObject)
+      const newBlog = await blogService.create(blog)
       dispatch(appendBlog(newBlog))
+      dispatch(initilizeUsers())
       dispatch(setNotification(`a new blog ${newBlog.title} by ${newBlog.author ? newBlog.author : '-'} added`, 5))
     } catch (error) {
       dispatch(setNotification('Missing fields', 5, true))
@@ -49,16 +51,26 @@ export const createBlog = blogObject => {
 
 export const addLike = blog => {
   return async dispatch => {
-    const updatedBlog = await blogService.addLike(blog)
-    dispatch(likeBlog(updatedBlog))
+    try {
+      const updatedBlog = await blogService.addLike(blog)
+      dispatch(likeBlog(updatedBlog))
+    } catch (error) {
+      dispatch(setNotification('Something went wrong', 5, true))
+    }
   }
 }
 
-export const removeBlog = id => {
+export const deleteBlog = blog => {
   return async dispatch => {
-    const deletedBlog = await blogService.deleteBlog(id)
-    dispatch(delBlog(deletedBlog))
-    dispatch(initilizeBlogs())
+    try {
+      if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+        const deletedBlog = await blogService.deleteBlog(blog.id)
+        dispatch(delBlog(deletedBlog))
+        dispatch(initilizeBlogs())
+      }
+    } catch (error) {
+      dispatch(setNotification('Unable to delete blog', 5, true))
+    }
   }
 }
 

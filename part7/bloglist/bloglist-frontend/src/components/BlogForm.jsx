@@ -5,10 +5,10 @@ import Togglable from './Togglable'
 
 const BlogForm = () => {
   const dispatch = useDispatch()
-  const user = useSelector(state => state.user)
+  const user = useSelector(state => state.users.currentUser)
   const blogFormRef = useRef()
 
-  const addBlog = async (event) => {
+  const addBlog = (event) => {
     event.preventDefault()
     blogFormRef.current.toggleVisibility()
 
