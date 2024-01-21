@@ -36,9 +36,13 @@ const deleteBlog = async id => {
   const config = {
     headers: { Authorization: token },
   }
-
   const response = await axios.delete(`${baseUrl}/${id}`, config)
   return response.data
 }
 
-export default { getAll, create, setToken, addLike, deleteBlog }
+const addComment = async ({ blogId, comment }) => {
+  const response = await axios.post(`${baseUrl}/${blogId}/comments`, comment)
+  return response.data
+}
+
+export default { getAll, create, setToken, addLike, deleteBlog, addComment }

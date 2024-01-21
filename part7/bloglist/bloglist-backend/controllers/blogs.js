@@ -30,7 +30,9 @@ blogsRouter.post('/',userExtractor, async (req, res) => {
 
 blogsRouter.get('/', async (req, res) => {
   const blogs = await Blog
-    .find({}).populate('user', { username: 1, name: 1 })
+    .find({})
+    .populate('user', { username: 1, name: 1 })
+    .populate('comments', { message: 1 })
 
   res.json(blogs)
 })
