@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { logIn } from '../reducers/userReducer'
+import { Form, Button } from 'react-bootstrap'
 
 const LogInForm = () => {
   const dispatch = useDispatch()
@@ -25,25 +26,27 @@ const LogInForm = () => {
   return (
     <div>
       <h2>Log in to application</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
+      <Form onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Label>username</Form.Label>
+          <Form.Control
             type="text"
             name="Username"
             id='username'
           />
-        </div>
-        <div>
-          password
-          <input
+        </Form.Group>
+        <Form.Group style={{ paddingBottom: '8px' }}>
+          <Form.Label>password</Form.Label>
+          <Form.Control
             type="password"
             name="Password"
             id='password'
           />
-        </div>
-        <button type="submit" id='login-button'>login</button>
-      </form>
+        </Form.Group>
+        <Button variant="primary" type="submit" id='login-button'>
+          login
+        </Button>
+      </Form>
     </div>
   )
 }

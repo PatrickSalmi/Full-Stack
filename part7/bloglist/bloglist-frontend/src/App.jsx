@@ -22,7 +22,7 @@ const App = () => {
   }, [dispatch])
 
   return(
-    <div>
+    <div className='container'>
       <Menu />
       <Notification />
       <h2>blog app</h2>

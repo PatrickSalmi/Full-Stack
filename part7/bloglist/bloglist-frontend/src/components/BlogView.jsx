@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux'
 import { useMatch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addLike, addComment } from '../reducers/blogReducer'
+import { Form, Button } from 'react-bootstrap'
 
 const BlogView = () => {
   const dispatch = useDispatch()
@@ -27,14 +28,30 @@ const BlogView = () => {
     return (
       <div>
         <h2>{blog.title} {blog.author}</h2>
-        <div><a href={blog.url}> {blog.url}</a></div>
-        {blog.likes} <button onClick={() => dispatch(addLike(blog))} id='like-button'>like</button>
-        <div>added by {blog.user.name}</div>
-        <h3>comments</h3>
-        <form onSubmit={handleComment}>
-          <input name='comment' id='comment-input'></input>
-          <button type='submit' id='comment-button'>add comment</button>
-        </form>
+        <div style={{ padding: '10px' }}><a href={blog.url}> {blog.url}</a></div>
+        {blog.likes} <Button
+          variant='primary'
+          type='submit'
+          onClick={() => dispatch(addLike(blog))}
+          id='like-button'
+        >
+          like
+        </Button>
+        <div style={{ paddingTop: '10px' }}>added by {blog.user.name}</div>
+        <h3 style={{ paddingTop: '10px' }}>comments</h3>
+        <Form onSubmit={handleComment}>
+          <Form.Group style={{ paddingBottom: '10px' }}>
+            <Form.Label style={{ paddingTop: '10px' }}>add comment</Form.Label>
+            <Form.Control
+              type='text'
+              name='comment'
+              id='comment-input'
+            />
+          </Form.Group>
+          <Button variant='primary' type='submit' id='comment-button'>
+            add comment
+          </Button>
+        </Form>
         <ul>
           {blog.comments.map(comment =>
             <li key={comment.id}>{comment.message}</li>

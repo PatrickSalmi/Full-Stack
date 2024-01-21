@@ -7,7 +7,7 @@ const notificationSlice = createSlice({
     setNotificationMessage(state, action) {
       return {
         message: action.payload.message,
-        color: action.payload.color,
+        variant: action.payload.variant,
       }
     },
     deleteNotification() {
@@ -18,8 +18,8 @@ const notificationSlice = createSlice({
 
 export const setNotification = (message, time, error = false) => {
   return async dispatch => {
-    const color = error ? 'red' : 'green'
-    dispatch(setNotificationMessage({ message, color }))
+    const variant = error ? 'danger' : 'success'
+    dispatch(setNotificationMessage({ message, variant }))
     setTimeout(() => {
       dispatch(deleteNotification())
     }, time * 1000)
